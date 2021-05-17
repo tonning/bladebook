@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace Tonning\Bladebook\Tests;
 
 class ExampleTest extends TestCase
 {

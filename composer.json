@@ -1,24 +1,29 @@
 {
-    "name": "vendor_slug/package_slug",
-    "description": ":package_description",
+    "name": "tonning/bladebook",
+    "description": "Storybook for Blade components",
     "keywords": [
-        ":vendor_name",
+        "tonning",
         "laravel",
-        "package_slug"
+        "bladebook",
+        "storybook",
+        "blade",
+        "components"
     ],
-    "homepage": "https://github.com/vendor_slug/package_slug",
+    "homepage": "https://github.com/tonning/bladebook",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Kristoffer Tonning",
+            "email": "tonning@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.0",
-        "spatie/laravel-package-tools": "^1.4.3",
-        "illuminate/contracts": "^8.37"
+        "haydenpierce/class-finder": "^0.4.3",
+        "illuminate/contracts": "^8.37",
+        "livewire/livewire": "^2.4",
+        "symfony/var-exporter": "^5.2"
     },
     "require-dev": {
         "brianium/paratest": "^6.2",
@@ -30,13 +35,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Tonning\\Bladebook\\": "src",
+            "Tonning\\Bladebook\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Tonning\\Bladebook\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -50,10 +55,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Tonning\\Bladebook\\BladebookServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
+                "Bladebook": "Tonning\\Bladebook\\BladebookFacade"
             }
         }
     },
