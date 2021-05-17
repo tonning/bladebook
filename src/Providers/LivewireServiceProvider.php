@@ -2,10 +2,10 @@
 
 namespace Tonning\Bladebook\Providers;
 
-use Tonning\Bladebook\BladebookComponentsFinder;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Tonning\Bladebook\BladebookComponentsFinder;
 
 class LivewireServiceProvider extends ServiceProvider implements DeferrableProvider
 {

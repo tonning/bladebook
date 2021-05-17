@@ -2,12 +2,12 @@
 
 namespace Tonning\Bladebook;
 
-use Tonning\Bladebook\Http\Slots\EmptySlot;
-use Tonning\Bladebook\Http\Slots\Slot;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Symfony\Component\VarExporter\VarExporter;
+use Tonning\Bladebook\Http\Slots\EmptySlot;
+use Tonning\Bladebook\Http\Slots\Slot;
 
 abstract class BladebookComponent extends Component
 {
