@@ -221,8 +221,8 @@ abstract class BladebookComponent extends Component
         collect($this->getOptions())->each(function ($option, $key) {
             $hiddenKey = "_{$key}";
 
-            if ($option['type'] == 'array') {
-                if (property_exists($this, $hiddenKey) && ! empty($this->$hiddenKey)) {
+            if ($option['type'] == 'array' && (property_exists($this, $hiddenKey))) {
+                if (! empty($this->$hiddenKey)) {
                     $this->atLeastOnePropertyHasBeenSet = true;
 
                     return false;

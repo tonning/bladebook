@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none !important;
+}
+
+
+/*@import "~prismjs/themes/prism-tomorrow.css";*/
+/*@import "~prism-themes/themes/prism-synthwave84.css";*/
+/*@import "~prism-themes/themes/prism-nord.css";*/
+/*@import "~prism-themes/themes/prism-material-oceanic.css";*/
+/*@import "~prism-themes/themes/prism-night-owl.css";*/
+@import "./prism-spacegray.css";

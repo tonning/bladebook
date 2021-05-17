@@ -17,7 +17,10 @@ class BladebookServiceProvider extends ServiceProvider
 
         Blade::componentNamespace('Tonning\\Bladebook\\Views\\Components', 'book');
 
-        $this->registerCommands();
+        if ($this->app->runningInConsole()) {
+            $this->publishFiles();
+            $this->registerCommands();
+        }
     }
 
     public function register()
@@ -71,5 +74,16 @@ class BladebookServiceProvider extends ServiceProvider
         $this->commands([
             Discover::class,
         ]);
+    }
+
+    protected function publishFiles()
+    {
+        $this->publishes([
+            __DIR__ . '/../config/bladebook.php' => config_path('bladebook.php'),
+        ], 'config');
+
+        $this->publishes([
+            __DIR__.'/../public' => public_path('vendor/bladebook'),
+        ], 'bladebook:assets');
     }
 }
