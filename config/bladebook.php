@@ -4,7 +4,8 @@ return [
     'books' => [
         [
             'name' => 'Fabrick',
-            'namespace' => 'Helix\\Fabrick\\Http\\Livewire',
+            'namespace' => 'Helix\\Fabrick\\Http\\Bladebook',
+            'bladeComponentNamespace' => 'fab',
         ],
     ],
 ];

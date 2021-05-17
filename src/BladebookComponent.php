@@ -49,7 +49,9 @@ abstract class BladebookComponent extends Component
     {
         $component = $this->getComponentStringable()->kebab()->replace('.-', '.');
 
-        $code = "<x-fab::{$component}";
+        $bladeComponentNamespace = $this->getBladeComponentNamespace();
+
+        $code = "<x-{$bladeComponentNamespace}::{$component}";
 
         foreach ($this->getOptions() as $key => $option) {
             $hiddenKey = "_{$key}";
@@ -107,7 +109,7 @@ abstract class BladebookComponent extends Component
             $code .= PHP_EOL;
         }
 
-        $code .= "</x-fab::{$component}>";
+        $code .= "</x-{$bladeComponentNamespace}::{$component}>";
 
         return $code;
     }
@@ -145,8 +147,8 @@ abstract class BladebookComponent extends Component
         View::share('options', $this->getOptions());
         View::share('slots', $this->getSlots());
 
-        return view("fab::bladebook.{$component->lower()}")
-            ->extends('fab::layouts.app');
+        return view("{$this->getBladeComponentNamespace()}::bladebook.{$component->lower()}")
+            ->extends('book::layouts.app');
     }
 
     private function getOptions() : array
@@ -236,11 +238,13 @@ abstract class BladebookComponent extends Component
     }
 
     /**
+     * @TODO: Use book configurations instead of hardcoded.
+     *
      * @return \Illuminate\Support\Stringable
      */
     protected function getComponentStringable() : \Illuminate\Support\Stringable
     {
-        $component = Str::of(get_class($this))->after('Helix\\Fabrick\\Http\\Livewire\\')->replace('\\', '.');
+        $component = Str::of(get_class($this))->after('Helix\\Fabrick\\Http\\Bladebook\\')->replace('\\', '.');
 
         return $component;
     }
@@ -254,5 +258,16 @@ abstract class BladebookComponent extends Component
         foreach ($this->slots as $key => $class) {
             $this->__slotValues[$key] = $class[0];
         }
+    }
+
+    private function getBladeComponentNamespace()
+    {
+        foreach (config('bladebook.books') as $book) {
+            if (Str::after($this::class, $book['namespace']) !== $book['namespace']) {
+                return $book['bladeComponentNamespace'];
+            }
+        }
+
+        throw new \Exception('Bladebook book not found');
     }
 }

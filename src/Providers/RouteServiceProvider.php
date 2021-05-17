@@ -12,8 +12,8 @@ class RouteServiceProvider extends ServiceProvider implements DeferrableProvider
     {
         Route::group([
             'middleware' => ['web', 'auth'],
-            'as' => 'fabrick::',
-            'prefix' => 'fabrick',
+            'as' => 'bladebook::',
+            'prefix' => 'bladebook',
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         });
