@@ -2,12 +2,12 @@
 
 namespace Tonning\Bladebook;
 
-use Tonning\Bladebook\Commands\Discover;
-use Tonning\Bladebook\Providers\LivewireServiceProvider;
-use Tonning\Bladebook\Providers\RouteServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Tonning\Bladebook\Commands\Discover;
+use Tonning\Bladebook\Providers\LivewireServiceProvider;
+use Tonning\Bladebook\Providers\RouteServiceProvider;
 
 class BladebookServiceProvider extends ServiceProvider
 {

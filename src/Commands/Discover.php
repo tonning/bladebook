@@ -2,8 +2,8 @@
 
 namespace Tonning\Bladebook\Commands;
 
-use Tonning\Bladebook\BladebookComponentsFinder;
 use Illuminate\Console\Command;
+use Tonning\Bladebook\BladebookComponentsFinder;
 
 class Discover extends Command
 {
