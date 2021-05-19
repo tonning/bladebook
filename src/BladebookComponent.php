@@ -11,7 +11,9 @@ use Tonning\Bladebook\Http\Slots\Slot;
 
 abstract class BladebookComponent extends Component
 {
-    public string $__activeTab = 'preview';
+    public string $__activeComponentTab = 'preview';
+
+    public string $__activeInformationTab = 'controls';
 
     public string $__code = '';
 
@@ -141,13 +143,18 @@ abstract class BladebookComponent extends Component
                 return $carry;
             });
 
+        $docs = view()->exists("{$this->getBladeComponentNamespace()}::bladebook.docs.{$component->lower()}")
+            ? "{$this->getBladeComponentNamespace()}::bladebook.docs.{$component->lower()}"
+            : null;
+
         View::share('name', $name);
         View::share('breadcrumbs', $breadcrumbs);
         View::share('code', $this->__code);
         View::share('options', $this->getOptions());
         View::share('slots', $this->getSlots());
+        View::share('docs', $docs);
 
-        return view("{$this->getBladeComponentNamespace()}::bladebook.{$component->lower()}")
+        return view("{$this->getBladeComponentNamespace()}::bladebook.components.{$component->lower()}")
             ->extends('book::layouts.app');
     }
 

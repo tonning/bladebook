@@ -20,6 +20,7 @@
     ],
     "require": {
         "php": "^8.0",
+        "graham-campbell/markdown": "^13.1",
         "haydenpierce/class-finder": "^0.4.3",
         "illuminate/contracts": "^8.37",
         "livewire/livewire": "^2.4",

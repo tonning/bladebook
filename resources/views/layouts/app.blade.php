@@ -7,11 +7,17 @@
     <title>Bladebook</title>
 
     <link href="{{ asset(mix('bladebook.css', 'vendor/bladebook')) }}" rel="stylesheet">
-    @foreach(config('bladebook.assets.css') as $cssPath)
+    @foreach(config('bladebook.assets.css', []) as $cssPath)
         <link href="{{ $cssPath }}" rel="stylesheet">
     @endforeach
     @livewireStyles
+
     <script src="{{ asset(mix('bladebook.js', 'vendor/bladebook')) }}" defer></script>
+    <script src="{{ asset(mix('renderjson.js', 'vendor/bladebook')) }}" defer></script>
+    @foreach(config('bladebook.assets.scripts', []) as $scriptPath)
+        <script src="{{ $scriptPath }}" defer></script>
+    @endforeach
+    <script src="{{ $scriptPath }}" defer></script>
 </head>
 <body>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tonning\Bladebook\Views\Components\Layouts;
+namespace Tonning\Bladebook\Views\Components;
 
 use Illuminate\View\Component;
 

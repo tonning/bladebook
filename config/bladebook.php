@@ -11,6 +11,9 @@ return [
     'assets' => [
         'css' => [
             //
+        ],
+        'scripts' => [
+            //
         ]
     ]
 ];

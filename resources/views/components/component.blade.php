@@ -1,5 +1,6 @@
 <div
     x-data="component()"
+    @event="recordEvent($event.detail)"
 >
     <x-book::page :title="$name" :breadcrumbs="$breadcrumbs">
         <header class="flex items-center pt-4 mb-3 whitespace-nowrap">
@@ -9,34 +10,34 @@
                     <button
                         x-ref="preview"
                         class="flex focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 rounded-md focus:outline-none focus-visible:ring-offset-gray-100"
-                        @click="activeTab = 'preview'"
-                        :tabindex="activeTab === 'preview' ? '0' : '-1'"
-                        @keydown.arrow-left="activeTab = 'code'"
-                        @keydown.arrow-right="activeTab = 'code'"
+                        @click="activeComponentTab = 'preview'"
+                        :tabindex="activeComponentTab === 'preview' ? '0' : '-1'"
+                        @keydown.arrow-left="activeComponentTab = 'code'"
+                        @keydown.arrow-right="activeComponentTab = 'code'"
                         tabindex="0"
                     >
-                        <span class="p-1.5 lg:pl-2.5 lg:pr-3.5 rounded-md flex items-center text-sm font-medium" :class="activeTab === 'preview' ? 'bg-white shadow-sm ring-1 ring-black ring-opacity-5' : ''">
-                            <svg width="20" height="20" fill="none" class="lg:mr-2 text-gray-500 group-hover:text-gray-900" :class="activeTab === 'preview' ? 'text-teal-500' : 'text-gray-500 group-hover:text-gray-900'">
+                        <span class="p-1.5 lg:pl-2.5 lg:pr-3.5 rounded-md flex items-center text-sm font-medium" :class="activeComponentTab === 'preview' ? 'bg-white shadow-sm ring-1 ring-black ring-opacity-5' : ''">
+                            <svg width="20" height="20" fill="none" class="lg:mr-2 text-gray-500 group-hover:text-gray-900" :class="activeComponentTab === 'preview' ? 'text-teal-500' : 'text-gray-500 group-hover:text-gray-900'">
                                 <path d="M17.25 10c0 1-1.75 6.25-7.25 6.25S2.75 11 2.75 10 4.5 3.75 10 3.75 17.25 9 17.25 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                 <circle cx="10" cy="10" r="2.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
                             </svg>
-                            <span class="sr-only lg:not-sr-only text-gray-600 group-hover:text-gray-900" :class="activeTab === 'preview' ? 'text-gray-900' : 'text-gray-600 group-hover:text-gray-900'">Preview</span>
+                            <span class="sr-only lg:not-sr-only text-gray-600 group-hover:text-gray-900" :class="activeComponentTab === 'preview' ? 'text-gray-900' : 'text-gray-600 group-hover:text-gray-900'">Preview</span>
                         </span>
                     </button>
 
                     <button
                         class="ml-0.5 p-1.5 lg:pl-2.5 lg:pr-3.5 rounded-md flex items-center text-sm text-gray-600 font-medium focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 focus:outline-none focus-visible:ring-offset-gray-100"
-                        :class="activeTab === 'code' ? 'bg-white shadow-sm ring-1 ring-black ring-opacity-5' : ''"
-                        @click="activeTab = 'code'"
+                        :class="activeComponentTab === 'code' ? 'bg-white shadow-sm ring-1 ring-black ring-opacity-5' : ''"
+                        @click="activeComponentTab = 'code'"
                         tabindex="-1"
-                        :tabindex="activeTab === 'code' ? '0' : '-1'"
-                        @keydown.arrow-left="activeTab = 'preview'"
-                        @keydown.arrow-right="activeTab = 'preview'"
+                        :tabindex="activeComponentTab === 'code' ? '0' : '-1'"
+                        @keydown.arrow-left="activeComponentTab = 'preview'"
+                        @keydown.arrow-right="activeComponentTab = 'preview'"
                     >
-                        <svg width="20" height="20" fill="none" class="lg:mr-2 text-gray-500 group-hover:text-gray-900" :class="activeTab === 'code' ? 'text-teal-500' : 'text-gray-500 group-hover:text-gray-900'">
+                        <svg width="20" height="20" fill="none" class="lg:mr-2 text-gray-500 group-hover:text-gray-900" :class="activeComponentTab === 'code' ? 'text-teal-500' : 'text-gray-500 group-hover:text-gray-900'">
                             <path d="M13.75 6.75l3.5 3.25-3.5 3.25M6.25 13.25L2.75 10l3.5-3.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
-                        <span class="sr-only lg:not-sr-only text-gray-600 group-hover:text-gray-900" :class="activeTab === 'code' ? 'text-gray-900' : 'text-gray-600 group-hover:text-gray-900'">Code</span>
+                        <span class="sr-only lg:not-sr-only text-gray-600 group-hover:text-gray-900" :class="activeComponentTab === 'code' ? 'text-gray-900' : 'text-gray-600 group-hover:text-gray-900'">Code</span>
                     </button>
                 </div>
 
@@ -76,7 +77,7 @@
 
         <ul class="space-y-3">
             <li
-                x-show="activeTab == 'preview'"
+                x-show="activeComponentTab == 'preview'"
                 class="bg-white shadow overflow-hidden px-4 py-4 sm:px-6 rounded-md"
             >
                 <div {{ $attributes->merge(['x-data']) }}>
@@ -88,14 +89,73 @@
                 x-ref="snippet"
                 x-cloak
                 wire:ignore
-                x-show="activeTab == 'code'"
+                x-show="activeComponentTab == 'code'"
                 class="bg-white shadow overflow-hidden rounded-md"
             >
                 <pre><code x-html="highlight()" class="language-html"></code></pre>
             </li>
 
-            <li class="bg-white shadow overflow-hidden px-4 py-4 sm:px-6 rounded-md">
-                <ul class="divide-y divide-gray-200">
+            <li class="bg-white shadow overflow-hidden rounded-md">
+                <div>
+                    <div class="sm:hidden">
+                        <label for="information-tabs" class="sr-only">Select a tab</label>
+                        <select id="information-tabs" name="information-tabs" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                            <option selected>Controls</option>
+
+                            <option>Events</option>
+
+                            <option>Docs</option>
+                        </select>
+                    </div>
+                    <div class="hidden sm:block">
+                        <div class="border-b border-gray-200">
+                            <nav class="-mb-px flex" aria-label="Tabs">
+                                <a
+                                    @click="activeInformationTab = 'controls'"
+                                    href="#controls"
+                                    class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm flex justify-center items-center"
+                                    :class="[activeInformationTab == 'controls' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300']"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                                    </svg>
+                                    Controls
+                                </a>
+
+                                <a
+                                    @click="activeInformationTab = 'events'"
+                                    href="#events"
+                                    class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm flex justify-center items-center"
+                                    :class="[activeInformationTab == 'events' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300']"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd" />
+                                    </svg>
+                                    Events
+                                </a>
+
+                                <a
+                                    @if($docs)
+                                        @click="activeInformationTab = 'docs'"
+                                        href="#docs"
+                                    @endif
+                                    class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm flex justify-center items-center {{ $docs ? '' : 'pointer-events-none' }}"
+                                    :class="[activeInformationTab == 'docs' ? 'border-indigo-500 text-indigo-600' : 'border-transparent {{ $docs ? 'text-gray-500 hover:text-gray-700 hover:border-gray-300' : 'text-gray-400' }} ']"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                                    </svg>
+                                    Docs
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <ul
+                    x-show="activeInformationTab == 'controls'"
+                    class="divide-y divide-gray-200 px-4 py-4 sm:px-6"
+                >
                     @foreach($options as $key => $option)
                         <li class="px-4 py-4 sm:px-0">
                             @switch($option['type'])
@@ -131,51 +191,130 @@
                             @endswitch
                         </li>
                     @endforeach
+
+                    @unless(empty($slots))
+                        <li>
+                            <div class="pb-2 border-b border-gray-200 mt-10">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    Slots
+                                </h3>
+                            </div>
+
+                            <ul class="space-y-3">
+                                @foreach($slots as $key => $slot)
+                                    <li class="px-4 py-4 sm:px-0">
+                                        <x-fab::forms.select
+                                            wire:model="__slotValues.{{ $key }}"
+                                            label="{{ $slot['label'] }}"
+                                            help="These are examples of what could be use in the slot. You are free to put in whatever you like."
+                                        >
+                                            @foreach($slot['examples'] as $name => $example)
+                                                <option value="{{ $name }}">{{ $example }}</option>
+                                            @endforeach
+                                        </x-fab::forms.select>
+
+                                        @if($_instance->__slotValues[$key] == Tonning\Bladebook\Http\Slots\CustomSlot::class)
+                                            <x-fab::forms.input
+                                                class="mt-4"
+                                                wire:model="__slotCustomValues.{{ $key }}"
+                                                label="Custom slot"
+                                                help="Run wild."
+                                            ></x-fab::forms.input>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endunless
                 </ul>
+
+                <ul
+                    x-cloak
+                    wire:ignore
+                    x-show="activeInformationTab == 'events'"
+                    class="bg-gray-800 border-b border-pink-400 text-gray-200"
+                >
+                    <li
+                        class="border-b p-4 flex justify-between items-center"
+                        id="listining-for-events"
+                    >
+                        <pre>Listening for events...</pre>
+                        <button
+                            x-on:click="clearEvents"
+                            type="button"
+                            class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                        >
+                            Clear
+                        </button>
+                    </li>
+                    <ul
+                        class="divide-y divide-pink-400 px-4 py-4 sm:px-6 bg-gray-800 text-gray-200"
+                        id="events"
+                    ></ul>
+                </ul>
+
+                <div
+                    class="px-4 py-4 sm:px-6 prose prose-pink"
+                    x-show="activeInformationTab == 'docs'"
+                    x-cloak
+                >
+                    {{ $docs ? view($docs) : '' }}
+                </div>
             </li>
         </ul>
-
-        @unless(empty($slots))
-            <x-fab::layouts.panel title="Slots" class="mt-4">
-                <ul class="space-y-3">
-                    @foreach($slots as $key => $slot)
-                        <li class="px-4 py-4 sm:px-0">
-                            <x-fab::forms.select
-                                wire:model="__slotValues.{{ $key }}"
-                                label="{{ $slot['label'] }}"
-                                help="These are examples of what could be use in the slot. You are free to put in whatever you like."
-                            >
-                                @foreach($slot['examples'] as $name => $example)
-                                    <option value="{{ $name }}">{{ $example }}</option>
-                                @endforeach
-                            </x-fab::forms.select>
-
-                            @if($_instance->__slotValues[$key] == Tonning\Bladebook\Http\Slots\CustomSlot::class)
-                                <x-fab::forms.input
-                                    class="mt-4"
-                                    wire:model="__slotCustomValues.{{ $key }}"
-                                    label="Custom slot"
-                                    help="Run wild."
-                                ></x-fab::forms.input>
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
-            </x-fab::layouts.panel>
-        @endunless
     </x-book::page>
 </div>
 
 <script>
     function component() {
         return {
-            activeTab: @entangle('__activeTab'),
+            activeComponentTab: @entangle('__activeComponentTab'),
+            activeInformationTab: @entangle('__activeInformationTab'),
             copied: false,
             initialized: true,
             copyTimeout: 750,
+            events: [],
             __code: @entangle('__code'),
+
             highlight() {
                 return Prism.highlight(this.__code, Prism.languages.html, 'html')
+            },
+
+            recordEvent(payload) {
+                let node = document.createElement("li");
+                node.classList.add('px-4', 'py-4', 'sm:px-0', 'flex', 'justify-between', 'items-start')
+
+                const infoNode = document.createElement('div')
+                infoNode.classList.add('flex', 'items-center')
+
+                const timestamp = document.createElement('span')
+                timestamp.innerText = new Date().toLocaleTimeString()
+                timestamp.classList.add('text-gray-300', 'mr-2', 'text-sm')
+
+                const badge = document.createElement('span')
+                badge.classList.add('inline-flex', 'items-center', 'px-2', 'py-0.5', 'h-6', 'rounded', 'text-xs', 'font-medium', 'bg-pink-100', 'text-pink-800', 'mr-4');
+                badge.innerText = payload.name
+
+                infoNode.appendChild(timestamp)
+                infoNode.appendChild(badge)
+
+                let renderedJson = renderjson.set_icons('+ ', '- ')(payload.details)
+                const events = document.getElementById("events");
+                let li = events.insertBefore(node, events.firstChild);
+                li.appendChild(renderedJson);
+                li.appendChild(infoNode);
+            },
+
+            hasEvents() {
+                return document.getElementById("events").hasChildNodes();
+            },
+
+            clearEvents() {
+                const node = document.getElementById("events");
+
+                while (node.hasChildNodes()) {
+                    node.removeChild(node.lastChild);
+                }
             }
         }
     }
