@@ -154,7 +154,7 @@ abstract class BladebookComponent extends Component
         View::share('slots', $this->getSlots());
         View::share('docs', $docs);
 
-        return view("{$this->getBladeComponentNamespace()}::bladebook.components.{$component->lower()}")
+        return view("{$this->getBladeComponentNamespace()}::bladebook.components.{$component->snake('-')->replace('.-', '.')}")
             ->extends('book::layouts.app');
     }
 
