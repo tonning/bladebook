@@ -116,6 +116,17 @@ abstract class BladebookComponent extends Component
         return $code;
     }
 
+    public function getSlot($key)
+    {
+        if (isset($this->__slotCustomValues[$key]) && $this->__slotCustomValues[$key]) {
+            return $this->__slotCustomValues[$key];
+        } elseif (isset($this->__slotValues[$key]) && $this->__slotValues[$key] && $this->__slotValues[$key] !== EmptySlot::class) {
+            return (new $this->__slotValues[$key])->toHtml();
+        }
+
+        return '';
+    }
+
     public function render()
     {
         $component = $this->getComponentStringable();
