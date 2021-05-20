@@ -9,7 +9,7 @@ class SentenceSlot extends Slot
         return 'Sentence';
     }
 
-    public function toHtml() : string
+    public function render() : string
     {
         return 'Taciti auctor tellus eleifend turpis condimentum accumsan mauris ac, dui blandit montes malesuada est hendrerit lacus faucibus, magnis diam nibh libero elit commodo pulvinar.';
     }

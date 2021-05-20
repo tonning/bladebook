@@ -9,8 +9,13 @@ class WordsSlot extends Slot
         return 'Words';
     }
 
-    public function toHtml() : string
+    public function render() : string
     {
         return 'Molestie ex augue';
+    }
+
+    public function toHtml() : string
+    {
+        return $this->render();
     }
 }

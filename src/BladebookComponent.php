@@ -99,7 +99,7 @@ abstract class BladebookComponent extends Component
                     $code .= '    <x-slot="' . $key . '">' . PHP_EOL;
                 }
 
-                $code .= $this->indent($key === Slot::MAIN_SLOT ? 4 : 8, (new $this->__slotValues[$key])->toHtml());
+                $code .= $this->indent($key === Slot::MAIN_SLOT ? 4 : 8, (new $this->__slotValues[$key])->codeSnippet());
 
                 if ($key !== Slot::MAIN_SLOT) {
                     $code .= PHP_EOL . '    </x-slot>';
@@ -121,7 +121,7 @@ abstract class BladebookComponent extends Component
         if (isset($this->__slotCustomValues[$key]) && $this->__slotCustomValues[$key]) {
             return $this->__slotCustomValues[$key];
         } elseif (isset($this->__slotValues[$key]) && $this->__slotValues[$key] && $this->__slotValues[$key] !== EmptySlot::class) {
-            return (new $this->__slotValues[$key])->toHtml();
+            return (new $this->__slotValues[$key])->render();
         }
 
         return '';

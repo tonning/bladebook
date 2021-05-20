@@ -9,7 +9,7 @@ class CustomSlot extends Slot
         return 'Custom';
     }
 
-    public function toHtml() : string
+    public function render() : string
     {
         return '';
     }

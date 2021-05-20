@@ -9,7 +9,7 @@ class SelectOptionSlot extends Slot
         return 'Standard select options';
     }
 
-    public function toHtml() : string
+    public function render() : string
     {
         return <<<HTML
             <option value="1">Option 1</option>

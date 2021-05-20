@@ -9,7 +9,7 @@ class EmptySlot extends Slot
         return 'Empty';
     }
 
-    public function toHtml() : string
+    public function render() : string
     {
         return '';
     }
