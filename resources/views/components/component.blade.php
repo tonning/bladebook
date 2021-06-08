@@ -1,6 +1,6 @@
 <div
     x-data="component()"
-    @event="recordEvent($event.detail)"
+    @event="recordEvent($event.detail); highlightEvent($event.detail)"
 >
     <x-book::page :title="$name" :breadcrumbs="$breadcrumbs">
         <header class="flex items-center pt-4 mb-3 whitespace-nowrap">
@@ -77,10 +77,10 @@
 
         <ul class="space-y-3">
             <li
+                {{ $attributes->merge(['x-data', 'class' => 'bg-white shadow overflow-hidden px-4 py-4 sm:px-6 rounded-md']) }}
                 x-show="activeComponentTab == 'preview'"
-                class="bg-white shadow overflow-hidden px-4 py-4 sm:px-6 rounded-md"
             >
-                <div {{ $attributes->merge(['x-data']) }}>
+                <div>
                     {{ $slot }}
                 </div>
             </li>
@@ -101,9 +101,8 @@
                         <label for="information-tabs" class="sr-only">Select a tab</label>
                         <select id="information-tabs" name="information-tabs" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
                             <option selected>Controls</option>
-
                             <option>Events</option>
-
+                            <option>Event Log</option>
                             <option>Docs</option>
                         </select>
                     </div>
@@ -132,6 +131,19 @@
                                         <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd" />
                                     </svg>
                                     Events
+                                </a>
+
+                                <a
+                                    @click="activeInformationTab = 'event-log'"
+                                    href="#events"
+                                    class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm flex justify-center items-center"
+                                    :class="[activeInformationTab == 'event-log' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300']"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z" />
+                                        <path d="M4 9a1 1 0 011-1 7 7 0 017 7 1 1 0 11-2 0 5 5 0 00-5-5 1 1 0 01-1-1zM3 15a2 2 0 114 0 2 2 0 01-4 0z" />
+                                    </svg>
+                                    Event Log
                                 </a>
 
                                 <a
@@ -232,15 +244,62 @@
                     x-cloak
                     wire:ignore
                     x-show="activeInformationTab == 'events'"
+                >
+                    <div class="flex flex-col">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Name
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Description
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Value
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!-- Odd row -->
+                                        @foreach($events as $event)
+                                            <tr
+                                                id="{{ $event['name'] }}"
+                                                class="{{ $loop->odd ? 'bg-white' : 'bg-gray-50' }} transition-colors"
+                                            >
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                    {{ $event['name'] }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {{ $event['description'] }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {{ $event['value'] }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </ul>
+
+                <ul
+                    x-cloak
+                    wire:ignore
+                    x-show="activeInformationTab == 'event-log'"
                     class="bg-gray-800 border-b border-pink-400 text-gray-200"
                 >
-                    <li
-                        class="border-b p-4 flex justify-between items-center"
-                        id="listining-for-events"
-                    >
+                    <li class="border-b p-4 flex justify-between items-center">
                         <pre>Listening for events...</pre>
                         <button
-                            x-on:click="clearEvents"
+                            x-on:click="clearEventLog"
                             type="button"
                             class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                         >
@@ -249,7 +308,7 @@
                     </li>
                     <ul
                         class="divide-y divide-pink-400 px-4 py-4 sm:px-6 bg-gray-800 text-gray-200"
-                        id="events"
+                        id="event-log"
                     ></ul>
                 </ul>
 
@@ -273,7 +332,6 @@
             copied: false,
             initialized: true,
             copyTimeout: 750,
-            events: [],
             __code: @entangle('__code'),
 
             highlight() {
@@ -299,18 +357,28 @@
                 infoNode.appendChild(badge)
 
                 let renderedJson = renderjson.set_icons('+ ', '- ')(payload.details)
-                const events = document.getElementById("events");
+                const events = document.getElementById('event-log');
                 let li = events.insertBefore(node, events.firstChild);
                 li.appendChild(renderedJson);
                 li.appendChild(infoNode);
             },
 
-            hasEvents() {
-                return document.getElementById("events").hasChildNodes();
+            highlightEvent(payload) {
+                const event = document.getElementById(payload.name);
+
+                event.classList.add('bg-indigo-50')
+
+                setTimeout(() => {
+                    event.classList.remove('bg-indigo-50')
+                }, 200)
             },
 
-            clearEvents() {
-                const node = document.getElementById("events");
+            hasEvents() {
+                return document.getElementById('event-log').hasChildNodes();
+            },
+
+            clearEventLog() {
+                const node = document.getElementById('event-log');
 
                 while (node.hasChildNodes()) {
                     node.removeChild(node.lastChild);

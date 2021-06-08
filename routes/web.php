@@ -3,7 +3,9 @@
 use Tonning\Bladebook\BladebookComponentsFinder;
 use Tonning\Bladebook\Http\Controllers\ComponentsController;
 use Illuminate\Support\Str;
+use Tonning\Bladebook\Http\Controllers\BooksController;
 
+Route::get('/', [BooksController::class, 'index'])->name('bladebook');
 
 foreach (app(BladebookComponentsFinder::class)->getManifest() as $alias => $class) {
     foreach ($this->app['config']['bladebook']['books'] as $book) {
@@ -16,5 +18,4 @@ foreach (app(BladebookComponentsFinder::class)->getManifest() as $alias => $clas
             Route::get(Str::slug($book['name']) . '/'. $alias->replace('.', '/')->__toString(), $class)->name($alias->replace('.', '::')->__toString());
         }
     }
-
 }

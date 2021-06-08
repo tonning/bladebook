@@ -77,6 +77,10 @@ abstract class BladebookComponent extends Component
             $code .= PHP_EOL;
         }
 
+        if (! $this->hasOptions() && ! $this->hasSlots()) {
+            $code .= ' /';
+        }
+
         $code .= '>';
 
         foreach ($this->__slotValues as $key => $slotValue) {
@@ -84,7 +88,7 @@ abstract class BladebookComponent extends Component
                 $code .= PHP_EOL;
 
                 if ($key !== Slot::MAIN_SLOT) {
-                    $code .= '    <x-slot="' . $key . '">' . PHP_EOL;
+                    $code .= '    <x-slot name="' . $key . '">' . PHP_EOL;
                 }
 
                 $code .= $this->indent($key === Slot::MAIN_SLOT ? 4 : 8, $this->__slotCustomValues[$key]);
@@ -96,7 +100,7 @@ abstract class BladebookComponent extends Component
                 $code .= PHP_EOL;
 
                 if ($key !== Slot::MAIN_SLOT) {
-                    $code .= '    <x-slot="' . $key . '">' . PHP_EOL;
+                    $code .= '    <x-slot name="' . $key . '">' . PHP_EOL;
                 }
 
                 $code .= $this->indent($key === Slot::MAIN_SLOT ? 4 : 8, (new $this->__slotValues[$key])->codeSnippet());
@@ -111,7 +115,9 @@ abstract class BladebookComponent extends Component
             $code .= PHP_EOL;
         }
 
-        $code .= "</x-{$bladeComponentNamespace}::{$component}>";
+        if ($this->hasOptions() || $this->hasSlots()) {
+            $code .= "</x-{$bladeComponentNamespace}::{$component}>";
+        }
 
         return $code;
     }
@@ -158,12 +164,15 @@ abstract class BladebookComponent extends Component
             ? "{$this->getBladeComponentNamespace()}::bladebook.docs.{$component->lower()}"
             : null;
 
+        $events = property_exists($this, 'events') ? $this->events : [];
+
         View::share('name', $name);
         View::share('breadcrumbs', $breadcrumbs);
         View::share('code', $this->__code);
         View::share('options', $this->getOptions());
         View::share('slots', $this->getSlots());
         View::share('docs', $docs);
+        View::share('events', $events);
 
         return view("{$this->getBladeComponentNamespace()}::bladebook.components.{$component->snake('-')->replace('.-', '.')}")
             ->extends('book::layouts.app');
@@ -207,6 +216,11 @@ abstract class BladebookComponent extends Component
         return $this->$method();
     }
 
+    protected function hasSlots() : bool
+    {
+        return ! empty($this->getSlots());
+    }
+
     private function getSlots() : array
     {
         if (! property_exists($this, 'slots')) {
@@ -228,6 +242,11 @@ abstract class BladebookComponent extends Component
     public function indent(int $spaces, string $content) : string
     {
         return collect(explode(PHP_EOL, $content))->map(fn ($line) => Str::repeat(' ', $spaces) . $line)->implode(PHP_EOL);
+    }
+
+    protected function hasOptions() : bool
+    {
+        return ! empty($this->getOptions());
     }
 
     protected function checkIfAtLeaseOneOptionHasBeenSet() : bool
