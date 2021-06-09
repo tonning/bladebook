@@ -59,7 +59,7 @@
                 "Tonning\\Bladebook\\BladebookServiceProvider"
             ],
             "aliases": {
-                "Bladebook": "Tonning\\Bladebook\\BladebookFacade"
+                "Bladebook": "Tonning\\Bladebook\\Facades\\Bladebook"
             }
         }
     },

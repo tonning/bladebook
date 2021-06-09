@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Tonning\Bladebook\BladebookComponentsFinder;
+use Tonning\Bladebook\Facades\Bladebook;
 
 class Sidebar extends Component
 {
@@ -17,7 +18,7 @@ class Sidebar extends Component
     {
         $book = Cookie::has('bladebook')
             ? json_decode(Cookie::get('bladebook'))->book
-            : config('bladebook.books')[0]['name'];
+            : Bladebook::getBooks()[0]['name'];
 
         $this->book = $book;
         $this->elements = $this->getElementsFor($book);
@@ -32,7 +33,7 @@ class Sidebar extends Component
 
     public function getElementsFor($bookName) : array
     {
-        $bookConfig = collect(config('bladebook.books'))->firstWhere('name', $bookName);
+        $bookConfig = collect(Bladebook::getBooks())->firstWhere('name', $bookName);
 
         if (! $bookConfig) {
             return [];

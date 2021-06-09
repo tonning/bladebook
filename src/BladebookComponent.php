@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Symfony\Component\VarExporter\VarExporter;
+use Tonning\Bladebook\Facades\Bladebook;
 use Tonning\Bladebook\Http\Slots\EmptySlot;
 use Tonning\Bladebook\Http\Slots\Slot;
 
@@ -299,7 +300,7 @@ abstract class BladebookComponent extends Component
 
     private function getBladeComponentNamespace()
     {
-        foreach (config('bladebook.books') as $book) {
+        foreach (Bladebook::getBooks() as $book) {
             if (Str::after($this::class, $book['namespace']) !== $book['namespace']) {
                 return $book['bladeComponentNamespace'];
             }

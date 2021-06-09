@@ -1,13 +1,13 @@
 <?php
 
-namespace Tonning\Bladebook;
+namespace Tonning\Bladebook\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \Tonning\Bladebook\Bladebook
  */
-class BladebookFacade extends Facade
+class Bladebook extends Facade
 {
     protected static function getFacadeAccessor()
     {

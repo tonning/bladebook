@@ -5,20 +5,74 @@ namespace Tonning\Bladebook;
 use Exception;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use ReflectionClass;
 
 class BladebookComponentsFinder
 {
-    protected $books;
+    protected array $books = [];
     protected $files;
     protected $manifest;
-    protected $manifestPath;
+    protected string $manifestPath;
+    protected array $vendorStylePaths = [];
+    protected array $vendorScriptPaths = [];
 
-    public function __construct(Filesystem $files, $manifestPath, $books)
+    public function __construct(Filesystem $files)
     {
         $this->files = $files;
-        $this->books = $books;
-        $this->manifestPath = $manifestPath;
+
+        $this->manifestPath = $this->isOnVapor()
+            ? '/tmp/storage/bootstrap/cache/bladebook-components.php'
+            : app()->bootstrapPath('cache/bladebook-components.php');
+    }
+
+    public function isOnVapor() : bool
+    {
+        return ($_ENV['SERVER_SOFTWARE'] ?? null) === 'vapor';
+    }
+
+    public function registerBook(string $name, string $bladeComponentNamespace, string $namespace = 'App\\Http\\Bladebook')
+    {
+        $this->books[] = [
+            'name' => $name,
+            'bladeComponentNamespace' => $bladeComponentNamespace,
+            'namespace' => $namespace,
+        ];
+
+        return $this;
+    }
+
+    public function registerStylePaths($stylePaths)
+    {
+        foreach (Arr::wrap($stylePaths) as $stylePath) {
+            $this->vendorStylePaths[] = $stylePath;
+        }
+
+        return $this;
+    }
+
+    public function registerScriptPaths($scriptPaths)
+    {
+        foreach (Arr::wrap($scriptPaths) as $scriptPath) {
+            $this->vendorScriptPaths[] = $scriptPath;
+        }
+
+        return $this;
+    }
+
+    public function getBooks()
+    {
+        return $this->books;
+    }
+
+    public function getVendorStylePaths() : array
+    {
+        return $this->vendorStylePaths;
+    }
+
+    public function getVendorScriptPaths() : array
+    {
+        return $this->vendorScriptPaths;
     }
 
     public function find($alias)

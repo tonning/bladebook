@@ -364,12 +364,16 @@
             },
 
             highlightEvent(payload) {
-                const event = document.getElementById(payload.name);
+                const eventNode = document.getElementById(payload.name);
 
-                event.classList.add('bg-indigo-50')
+                if (! eventNode) {
+                    return
+                }
+
+                eventNode.classList.add('bg-indigo-50')
 
                 setTimeout(() => {
-                    event.classList.remove('bg-indigo-50')
+                    eventNode.classList.remove('bg-indigo-50')
                 }, 200)
             },
 
