@@ -2,8 +2,6 @@
 
 namespace Tonning\Bladebook\Providers;
 
-
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Tonning\Bladebook\Bladebook;
