@@ -136,6 +136,8 @@ abstract class BladebookComponent extends Component
 
     public function render()
     {
+        abort_unless(\Tonning\Bladebook\Bladebook::check(request()), 403, 'This action is unauthorized.');
+
         $component = $this->getComponentStringable();
 
         $name = $component
