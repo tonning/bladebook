@@ -25,6 +25,12 @@ You are free to also publish the config file:
 php artisan vendor:publish --provider="Tonning\Bladebook\BladebookServiceProvider" --tag="config"
 ```
 
+## Discover Bladebook components
+```bash
+php artisan bladebook:discover
+```
+
+
 ## Creating Bladebook components
 
 After you've created your normal [Blade components](https://laravel.com/docs/8.x/blade#components) you need to write some simple wrappers around them in order for them to be visible in the Bladebook UI.
