@@ -4,6 +4,7 @@ namespace Tonning\Bladebook\Http\Slots;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\File;
+use Illuminate\View\View;
 
 abstract class Slot implements Renderable
 {
@@ -17,7 +18,7 @@ abstract class Slot implements Renderable
     {
         $view = $this->render();
 
-        if ($view instanceof Illuminate\Contracts\View\View) {
+        if ($view instanceof View) {
             return File::get($this->render()->getPath());
         }
 
