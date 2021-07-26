@@ -1,5 +1,69 @@
 <div
-    x-data="component()"
+    x-data="{
+            activeComponentTab: $persist(@entangle('__activeComponentTab')),
+            activeInformationTab: $persist(@entangle('__activeInformationTab')),
+            copied: false,
+            initialized: true,
+            copyTimeout: 750,
+            __code: @entangle('__code'),
+
+            highlight() {
+                return Prism.highlight(this.__code, Prism.languages.html, 'html')
+            },
+
+            recordEvent(payload) {
+                let node = document.createElement('li');
+                node.classList.add('px-4', 'py-4', 'sm:px-0', 'flex', 'justify-between', 'items-start')
+
+                const infoNode = document.createElement('div')
+                infoNode.classList.add('flex', 'items-center')
+
+                const timestamp = document.createElement('span')
+                timestamp.innerText = new Date().toLocaleTimeString()
+                timestamp.classList.add('text-gray-300', 'mr-2', 'text-sm')
+
+                const badge = document.createElement('span')
+                badge.classList.add('inline-flex', 'items-center', 'px-2', 'py-0.5', 'h-6', 'rounded', 'text-xs', 'font-medium', 'bg-pink-100', 'text-pink-800', 'mr-4');
+                badge.innerText = payload.name
+
+                infoNode.appendChild(timestamp)
+                infoNode.appendChild(badge)
+
+                let renderedJson = renderjson.set_icons('+ ', '- ')(payload.details)
+                const events = document.getElementById('event-log');
+                let li = events.insertBefore(node, events.firstChild);
+                li.appendChild(renderedJson);
+                li.appendChild(infoNode);
+            },
+
+            highlightEvent(payload) {
+                const eventNode = document.getElementById(payload.name);
+
+                if (! eventNode) {
+                    return
+                }
+
+                eventNode.classList.remove('bg-white')
+                eventNode.classList.add('bg-indigo-50')
+
+                setTimeout(() => {
+                    eventNode.classList.remove('bg-indigo-50')
+                    eventNode.classList.add('bg-white')
+                }, 400)
+            },
+
+            hasEvents() {
+                return document.getElementById('event-log').hasChildNodes();
+            },
+
+            clearEventLog() {
+                const node = document.getElementById('event-log');
+
+                while (node.hasChildNodes()) {
+                    node.removeChild(node.lastChild);
+                }
+            }
+        }"
     @event="recordEvent($event.detail); highlightEvent($event.detail)"
 >
     <x-book::page :title="$name" :breadcrumbs="$breadcrumbs">
@@ -200,6 +264,16 @@
                                     help="{{ $option['help'] ?? '' }}"
                                 ></x-fab::forms.input>
                                 @break
+
+                                @case('int')
+                                <x-fab::forms.input
+                                    type="number"
+                                    wire:model="{{ $key }}"
+                                    label="{{ $option['label'] }}"
+                                    name="{{ $key }}"
+                                    help="{{ $option['help'] ?? '' }}"
+                                ></x-fab::forms.input>
+                                @break
                             @endswitch
                         </li>
                     @endforeach
@@ -323,71 +397,3 @@
         </ul>
     </x-book::page>
 </div>
-
-<script>
-    function component() {
-        return {
-            activeComponentTab: @entangle('__activeComponentTab'),
-            activeInformationTab: @entangle('__activeInformationTab'),
-            copied: false,
-            initialized: true,
-            copyTimeout: 750,
-            __code: @entangle('__code'),
-
-            highlight() {
-                return Prism.highlight(this.__code, Prism.languages.html, 'html')
-            },
-
-            recordEvent(payload) {
-                let node = document.createElement("li");
-                node.classList.add('px-4', 'py-4', 'sm:px-0', 'flex', 'justify-between', 'items-start')
-
-                const infoNode = document.createElement('div')
-                infoNode.classList.add('flex', 'items-center')
-
-                const timestamp = document.createElement('span')
-                timestamp.innerText = new Date().toLocaleTimeString()
-                timestamp.classList.add('text-gray-300', 'mr-2', 'text-sm')
-
-                const badge = document.createElement('span')
-                badge.classList.add('inline-flex', 'items-center', 'px-2', 'py-0.5', 'h-6', 'rounded', 'text-xs', 'font-medium', 'bg-pink-100', 'text-pink-800', 'mr-4');
-                badge.innerText = payload.name
-
-                infoNode.appendChild(timestamp)
-                infoNode.appendChild(badge)
-
-                let renderedJson = renderjson.set_icons('+ ', '- ')(payload.details)
-                const events = document.getElementById('event-log');
-                let li = events.insertBefore(node, events.firstChild);
-                li.appendChild(renderedJson);
-                li.appendChild(infoNode);
-            },
-
-            highlightEvent(payload) {
-                const eventNode = document.getElementById(payload.name);
-
-                if (! eventNode) {
-                    return
-                }
-
-                eventNode.classList.add('bg-indigo-50')
-
-                setTimeout(() => {
-                    eventNode.classList.remove('bg-indigo-50')
-                }, 200)
-            },
-
-            hasEvents() {
-                return document.getElementById('event-log').hasChildNodes();
-            },
-
-            clearEventLog() {
-                const node = document.getElementById('event-log');
-
-                while (node.hasChildNodes()) {
-                    node.removeChild(node.lastChild);
-                }
-            }
-        }
-    }
-</script>

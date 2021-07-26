@@ -1,9 +1,10 @@
 {
     "devDependencies": {
+        "@alpinejs/persist": "^3.2.2",
         "@tailwindcss/forms": "^0.3.2",
         "@tailwindcss/line-clamp": "^0.2.0",
         "@tailwindcss/typography": "^0.4.0",
-        "alpinejs": "^2.8.2",
+        "alpinejs": "^3.2.2",
         "autoprefixer": "^10.2.5",
         "laravel-mix": "^6.0.19",
         "postcss": "^8.2.15",
