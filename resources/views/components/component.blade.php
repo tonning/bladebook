@@ -144,9 +144,7 @@
                 {{ $attributes->merge(['x-data', 'class' => 'bg-white shadow overflow-hidden px-4 py-4 sm:px-6 rounded-md']) }}
                 x-show="activeComponentTab == 'preview'"
             >
-                <div>
-                    {{ $slot }}
-                </div>
+                {{ $slot }}
             </li>
 
             <li

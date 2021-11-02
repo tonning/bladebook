@@ -40,7 +40,10 @@ class Sidebar extends Component
         }
 
         return collect(app(BladebookComponentsFinder::class)->getManifest())
-            ->mapWithKeys(function ($class, $alias) use ($bookConfig) {
+            ->filter(function ($class) use ($bookConfig) {
+                return Str::startsWith($class, $bookConfig['namespace']);
+            })
+            ->mapWithKeys(function ($class, $alias) use ($bookConfig, $bookName) {
                 return [
                     $class => [
                         'name' => Str::of($class)->after($bookConfig['namespace'] . '\\')->after('\\')->snake(' ')->title()->__toString(),

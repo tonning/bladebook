@@ -2,6 +2,7 @@
 
 namespace Tonning\Bladebook;
 
+use Cookie;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -177,8 +178,11 @@ abstract class BladebookComponent extends Component
         View::share('docs', $docs);
         View::share('events', $events);
 
-        return view("{$this->getBladeComponentNamespace()}::bladebook.components.{$component->snake('-')->replace('.-', '.')}")
-            ->extends('book::layouts.app');
+        $view = method_exists($this, 'view')
+            ? $this->view()
+            : view("{$this->getBladeComponentNamespace()}::bladebook.components.{$component->snake('-')->replace('.-', '.')}");
+
+        return $view->extends('book::layouts.app');
     }
 
     private function getOptions() : array
@@ -284,9 +288,9 @@ abstract class BladebookComponent extends Component
      */
     protected function getComponentStringable() : \Illuminate\Support\Stringable
     {
-        $component = Str::of(get_class($this))->after('Helix\\Fabrick\\Http\\Bladebook\\')->replace('\\', '.');
+        $namespace = Bladebook::getCurrentBookConfig('namespace');
 
-        return $component;
+        return Str::of(get_class($this))->after($namespace . '\\')->replace('\\', '.');
     }
 
     private function selectFirstSlots()
@@ -302,12 +306,6 @@ abstract class BladebookComponent extends Component
 
     private function getBladeComponentNamespace()
     {
-        foreach (Bladebook::getBooks() as $book) {
-            if (Str::after($this::class, $book['namespace']) !== $book['namespace']) {
-                return $book['bladeComponentNamespace'];
-            }
-        }
-
-        throw new \Exception('Bladebook book not found');
+        return Bladebook::getCurrentBookConfig('bladeComponentNamespace');
     }
 }

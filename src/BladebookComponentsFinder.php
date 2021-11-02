@@ -2,6 +2,7 @@
 
 namespace Tonning\Bladebook;
 
+use Cookie;
 use Exception;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Filesystem\Filesystem;
@@ -63,6 +64,22 @@ class BladebookComponentsFinder
     public function getBooks()
     {
         return $this->books;
+    }
+
+    public function getCurrentBookConfig($key = null)
+    {
+        $config = collect($this->getBooks())->firstWhere('name', $this->getCurrentBookName());
+
+        if (! is_null($key) && $config) {
+            return $config[$key];
+        }
+
+        return $config;
+    }
+
+    public function getCurrentBookName()
+    {
+        return json_decode(Cookie::get('bladebook'))->book;
     }
 
     public function getVendorStylePaths() : array
