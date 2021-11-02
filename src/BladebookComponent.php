@@ -2,7 +2,6 @@
 
 namespace Tonning\Bladebook;
 
-use Cookie;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Livewire\Component;
