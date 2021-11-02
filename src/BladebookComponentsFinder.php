@@ -43,19 +43,19 @@ class BladebookComponentsFinder
         return $this;
     }
 
-    public function registerStylePaths($stylePaths)
+    public function registerStylePaths($stylePaths, string $key)
     {
         foreach (Arr::wrap($stylePaths) as $stylePath) {
-            $this->vendorStylePaths[] = $stylePath;
+            $this->vendorStylePaths[$key][] = $stylePath;
         }
 
         return $this;
     }
 
-    public function registerScriptPaths($scriptPaths)
+    public function registerScriptPaths($scriptPaths, $key)
     {
         foreach (Arr::wrap($scriptPaths) as $scriptPath) {
-            $this->vendorScriptPaths[] = $scriptPath;
+            $this->vendorScriptPaths[$key][] = $scriptPath;
         }
 
         return $this;
@@ -82,14 +82,28 @@ class BladebookComponentsFinder
         return json_decode(Cookie::get('bladebook'))->book;
     }
 
-    public function getVendorStylePaths() : array
+    public function getVendorStylePaths($key) : array
     {
-        return $this->vendorStylePaths;
+        return $this->vendorStylePaths[$key] ?? [];
     }
 
-    public function getVendorScriptPaths() : array
+    public function getVendorScriptPaths($key) : array
     {
-        return $this->vendorScriptPaths;
+        return $this->vendorScriptPaths[$key] ?? [];
+    }
+
+    public function getCurrentVendorStylePaths() : array
+    {
+        $config = $this->getCurrentBookConfig();
+
+        return $this->getVendorStylePaths($config['bladeComponentNamespace']);
+    }
+
+    public function getCurrentVendorScriptPaths() : array
+    {
+        $config = $this->getCurrentBookConfig();
+
+        return $this->getVendorScriptPaths($config['bladeComponentNamespace']);
     }
 
     public function find($alias)
