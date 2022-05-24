@@ -1,18 +1,19 @@
 {
     "devDependencies": {
         "@alpinejs/persist": "^3.2.2",
-        "@tailwindcss/forms": "^0.3.2",
-        "@tailwindcss/line-clamp": "^0.2.0",
-        "@tailwindcss/typography": "^0.4.0",
+        "@tailwindcss/aspect-ratio": "^0.4.0",
+        "@tailwindcss/forms": "^0.5.2",
+        "@tailwindcss/line-clamp": "^0.4.0",
+        "@tailwindcss/typography": "^0.5.2",
         "alpinejs": "^3.2.2",
-        "autoprefixer": "^10.2.5",
+        "autoprefixer": "^10.4.7",
         "laravel-mix": "^6.0.19",
-        "postcss": "^8.2.15",
+        "postcss": "^8.4.14",
         "prism-themes": "^1.7.0",
         "prismjs": "^1.23.0",
         "sass": "^1.32.12",
         "sass-loader": "^11.1.0",
-        "tailwindcss": "^2.1.2"
+        "tailwindcss": "^3.0.24"
     },
     "scripts": {
         "dev": "npm run development",
