@@ -79,6 +79,10 @@ class BladebookComponentsFinder
 
     public function getCurrentBookName()
     {
+        if (is_null(Cookie::get('bladebook'))) {
+            return $this->books[0]['name'];
+        }
+
         return json_decode(Cookie::get('bladebook'))->book;
     }
 

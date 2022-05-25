@@ -18,10 +18,17 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "~/Code/packages/fabrick"
+        }
+    ],
     "require": {
         "php": "^8.0",
         "graham-campbell/markdown": "^13.1",
         "haydenpierce/class-finder": "^0.4.3",
+        "helix/fabrick": "dev-main",
         "illuminate/contracts": "^8.37",
         "livewire/livewire": "^2.4",
         "symfony/var-exporter": "^5.2"

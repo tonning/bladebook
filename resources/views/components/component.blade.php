@@ -141,7 +141,7 @@
 
         <ul class="space-y-3">
             <li
-                {{ $attributes->merge(['x-data', 'class' => 'bg-white shadow overflow-hidden px-4 py-4 sm:px-6 rounded-md']) }}
+                {{ $attributes->merge(['x-data', 'class' => 'bg-white dark:bg-slate-800 shadow overflow-hidden px-4 py-4 sm:px-6 rounded-md']) }}
                 x-show="activeComponentTab == 'preview'"
             >
                 {{ $slot }}
@@ -152,16 +152,16 @@
                 x-cloak
                 wire:ignore
                 x-show="activeComponentTab == 'code'"
-                class="bg-white shadow overflow-hidden rounded-md"
+                class="bg-white dark:bg-slate-800 shadow overflow-hidden rounded-md"
             >
                 <pre><code x-html="highlight()" class="language-html"></code></pre>
             </li>
 
-            <li class="bg-white shadow overflow-hidden rounded-md">
+            <li class="bg-white dark:bg-slate-800 shadow overflow-hidden rounded-md">
                 <div>
                     <div class="sm:hidden">
                         <label for="information-tabs" class="sr-only">Select a tab</label>
-                        <select id="information-tabs" name="information-tabs" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                        <select id="information-tabs" name="information-tabs" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 dark:border-slate-500 dark:focus:border-cyan-500 rounded-md">
                             <option selected>Controls</option>
                             <option>Events</option>
                             <option>Event Log</option>
@@ -175,7 +175,7 @@
                                     @click="activeInformationTab = 'controls'"
                                     href="#controls"
                                     class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm flex justify-center items-center"
-                                    :class="[activeInformationTab == 'controls' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300']"
+                                    :class="[activeInformationTab == 'controls' ? 'border-indigo-500 text-indigo-600 dark:border-cyan-600 dark:text-cyan-500' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-slate-400 dark:hover:text-slate-200']"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
@@ -187,7 +187,7 @@
                                     @click="activeInformationTab = 'events'"
                                     href="#events"
                                     class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm flex justify-center items-center"
-                                    :class="[activeInformationTab == 'events' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300']"
+                                    :class="[activeInformationTab == 'events' ? 'border-indigo-500 text-indigo-600 dark:border-cyan-600 dark:text-cyan-500' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-slate-400 dark:hover:text-slate-200']"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd" />
@@ -199,7 +199,7 @@
                                     @click="activeInformationTab = 'event-log'"
                                     href="#events"
                                     class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm flex justify-center items-center"
-                                    :class="[activeInformationTab == 'event-log' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300']"
+                                    :class="[activeInformationTab == 'event-log' ? 'border-indigo-500 text-indigo-600 dark:border-cyan-600 dark:text-cyan-500' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-slate-400 dark:hover:text-slate-200']"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z" />
@@ -214,7 +214,7 @@
                                         href="#docs"
                                     @endif
                                     class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm flex justify-center items-center {{ $docs ? '' : 'pointer-events-none' }}"
-                                    :class="[activeInformationTab == 'docs' ? 'border-indigo-500 text-indigo-600' : 'border-transparent {{ $docs ? 'text-gray-500 hover:text-gray-700 hover:border-gray-300' : 'text-gray-400' }} ']"
+                                    :class="[activeInformationTab == 'docs' ? 'border-indigo-500 text-indigo-600 dark:border-cyan-600 dark:text-cyan-500' : 'border-transparent {{ $docs ? 'text-gray-500 hover:text-gray-700 hover:border-gray-300' : 'text-gray-400' }} ']"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
@@ -228,10 +228,10 @@
 
                 <ul
                     x-show="activeInformationTab == 'controls'"
-                    class="divide-y divide-gray-200 px-4 py-4 sm:px-6"
+                    class=" px-4 py-4 sm:px-6"
                 >
                     @foreach($options as $key => $option)
-                        <li class="px-4 py-4 sm:px-0">
+                        <li class="px-4 py-3 sm:px-0">
                             @switch($option['type'])
                                 @case('array')
                                 <x-fab::forms.select
@@ -278,8 +278,8 @@
 
                     @unless(empty($slots))
                         <li>
-                            <div class="pb-2 border-b border-gray-200 mt-10">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            <div class="pb-2 border-b border-gray-200 dark:border-slate-500 mt-10">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-slate-400">
                                     Slots
                                 </h3>
                             </div>

@@ -1,80 +1,7 @@
-<div>
-    <div
-        x-show="show"
-        x-cloak
-        class="fixed inset-0 flex z-40 lg:hidden"
-        role="dialog"
-        aria-modal="true"
-    >
-        <div
-            x-show="show"
-            x-transition:enter="transition-opacity ease-linear duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition-opacity ease-linear duration-300"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-gray-600 bg-opacity-75"
-            aria-hidden="true"
-        ></div>
-
-        <div
-            x-show="show"
-            x-transition:enter="transition ease-in-out duration-300 transform"
-            x-transition:enter-start="-translate-x-full"
-            x-transition:enter-end="translate-x-0"
-            x-transition:leave="transition ease-in-out duration-300 transform"
-            x-transition:leave-start="translate-x-0"
-            x-transition:leave-end="-translate-x-full"
-            class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white"
-        >
-            <div
-                x-show="show"
-                x-transition:enter="ease-in-out duration-300"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="ease-in-out duration-300"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-                class="absolute top-0 right-0 -mr-12 pt-2"
-            >
-                <button
-                    x-on:click="show = false"
-                    class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                >
-                    <span class="sr-only">Close sidebar</span>
-                    <!-- Heroicon name: outline/x -->
-                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="flex-shrink-0 flex items-center px-4">
-                Bladebook
-            </div>
-            <div class="mt-5 flex-1 h-0 overflow-y-auto">
-                <nav class="px-2 space-y-1">
-                    @foreach($elements as $category => $categoryItems)
-                        <a href="{{ $categoryItems['route'] }}" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
-                            {{ $category }}
-                        </a>
-                    @endforeach
-                </nav>
-            </div>
-        </div>
-
-        <div class="flex-shrink-0 w-14" aria-hidden="true">
-            <!-- Dummy element to force sidebar to shrink to fit close icon -->
-        </div>
-    </div>
-
-    <!-- Static sidebar for desktop -->
-    <div class="hidden lg:flex lg:flex-shrink-0 h-full">
-        <div class="flex flex-col w-64">
-            <div class="flex flex-col flex-grow border-r border-gray-200 pt-5 pb-4 bg-white overflow-y-auto">
-                <div class="flex items-center flex-shrink-0 px-4 font-bold text-2xl text-pink-600">
-                    <svg class="h-10 w-10 mr-4" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 128 128" viewBox="0 0 128 128" xml:space="preserve">
+<x-fab::navigation.sidebar>
+    <x-slot name="desktop">
+        <div class="flex items-center flex-shrink-0 px-4 font-bold text-2xl text-pink-600">
+            <svg class="h-10 w-10 mr-4" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 128 128" viewBox="0 0 128 128" xml:space="preserve">
                     <g>
                         <g>
                             <path d="M18,117.7c0,4.2,3,8.3,7.2,8.3H106c4.2,0,8-4.1,8-8.3V8.8c0-4.2-3.8-6.8-8-6.8H25.2C21,2,18,4.7,18,8.8    V117.7z" fill="#DB2777"></path>
@@ -132,65 +59,163 @@
                         </g>
                     </g>
                 </svg>
-                    Bladebook
-                </div>
-                <div class="mt-5 flex-grow flex flex-col">
-                    <nav class="flex-1 px-2 space-y-1 bg-white" aria-label="Sidebar">
-                        <div class="border-b border-gray-200 pt-0 mb-2 pb-3 px-1">
-                            <label for="book" class="block text-sm font-medium text-gray-700">Project</label>
-                            <select
-                                wire:model="book"
-                                id="book"
-                                name="book"
-                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                            >
-                                @foreach(Bladebook::getBooks() as $book)
-                                    <option value="{{ $book['name'] }}">{{ $book['name'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        @foreach($elements as $category => $categoryItems)
-                            <div class="space-y-1" x-data="{ expanded: false }">
-                                <!-- Current: "bg-gray-100 text-gray-900", Default: "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
-                                <button
-                                    x-on:click="expanded = ! expanded"
-                                    type="button"
-                                    class="bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                    aria-controls="sub-menu-{{ $category }}"
-                                    :aria-expanded="expanded"
-                                >
-                                    <span class="flex-1">{{ $category }}</span>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        :class="[expanded ? 'text-gray-400 rotate-90' : 'text-gray-300']"
-                                        class="ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-gray-400 transition-colors ease-in-out duration-150"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
-                                <div
-                                    x-show="expanded"
-                                    x-cloak
-                                    class="space-y-1"
-                                    id="sub-menu-{{ $category }}"
-                                >
-                                    @foreach($categoryItems['items'] as $categoryItem)
-                                        <a href="{{ $categoryItem['route'] }}" class="group w-full flex items-center pl-11 pr-2 py-2 text-sm text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">
-                                            {{ $categoryItem['name'] }}
-                                        </a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endforeach
-                    </nav>
-                </div>
-            </div>
+            Bladebook
         </div>
-    </div>
-</div>
+        <div class="mt-5 flex-grow flex flex-col">
+            <nav class="flex-1 px-2 space-y-1 dark:bg-slate-800" aria-label="Sidebar">
+                <div class="border-b border-gray-200 dark:border-slate-500 pt-0 mb-2 pb-3 px-1">
+                    <x-fab::forms.select
+                        label="Project"
+                    >
+                        @foreach(Bladebook::getBooks() as $book)
+                            <option value="{{ $book['name'] }}">{{ $book['name'] }}</option>
+                        @endforeach
+                    </x-fab::forms.select>
+                </div>
+
+                @foreach($elements as $category => $categoryItems)
+                    <x-fab::navigation.group :title="$category">
+                        @foreach($categoryItems['items'] as $categoryItem)
+                            <x-fab::navigation.pill :url="$categoryItem['route']">
+                                {{ $categoryItem['name'] }}
+                            </x-fab::navigation.pill>
+{{--                            <a href="{{ $categoryItem['route'] }}" class="group w-full flex items-center pl-11 pr-2 py-2 text-sm text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">--}}
+{{--                                {{ $categoryItem['name'] }}--}}
+{{--                            </a>--}}
+                        @endforeach
+                    </x-fab::navigation.group>
+{{--                    <div class="space-y-1" x-data="{ expanded: false }">--}}
+{{--                        <!-- Current: "bg-gray-100 text-gray-900", Default: "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->--}}
+{{--                        <button--}}
+{{--                            x-on:click="expanded = ! expanded"--}}
+{{--                            type="button"--}}
+{{--                            class="bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"--}}
+{{--                            aria-controls="sub-menu-{{ $category }}"--}}
+{{--                            :aria-expanded="expanded"--}}
+{{--                        >--}}
+{{--                            <span class="flex-1">{{ $category }}</span>--}}
+{{--                            <svg--}}
+{{--                                xmlns="http://www.w3.org/2000/svg"--}}
+{{--                                :class="[expanded ? 'text-gray-400 rotate-90' : 'text-gray-300']"--}}
+{{--                                class="ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-gray-400 transition-colors ease-in-out duration-150"--}}
+{{--                                fill="none"--}}
+{{--                                viewBox="0 0 24 24"--}}
+{{--                                stroke="currentColor"--}}
+{{--                                aria-hidden="true"--}}
+{{--                            >--}}
+{{--                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />--}}
+{{--                            </svg>--}}
+{{--                        </button>--}}
+{{--                        <div--}}
+{{--                            x-show="expanded"--}}
+{{--                            x-cloak--}}
+{{--                            class="space-y-1"--}}
+{{--                            id="sub-menu-{{ $category }}"--}}
+{{--                        >--}}
+{{--                            @foreach($categoryItems['items'] as $categoryItem)--}}
+{{--                                <a href="{{ $categoryItem['route'] }}" class="group w-full flex items-center pl-11 pr-2 py-2 text-sm text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">--}}
+{{--                                    {{ $categoryItem['name'] }}--}}
+{{--                                </a>--}}
+{{--                            @endforeach--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+                @endforeach
+            </nav>
+        </div>
+    </x-slot>
+
+    <x-slot name="mobile">
+        <div class="flex-shrink-0 flex items-center px-4">
+            Bladebook
+        </div>
+        <div class="mt-5 flex-1 h-0 overflow-y-auto">
+            <nav class="px-2 space-y-1">
+                @foreach($elements as $category => $categoryItems)
+                    <a href="{{ $categoryItems['route'] }}" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                        {{ $category }}
+                    </a>
+                @endforeach
+            </nav>
+        </div>
+    </x-slot>
+</x-fab::navigation.sidebar>
+
+{{--    <div--}}
+{{--        x-show="show"--}}
+{{--        x-cloak--}}
+{{--        class="fixed inset-0 flex z-40 lg:hidden"--}}
+{{--        role="dialog"--}}
+{{--        aria-modal="true"--}}
+{{--    >--}}
+{{--        <div--}}
+{{--            x-show="show"--}}
+{{--            x-transition:enter="transition-opacity ease-linear duration-300"--}}
+{{--            x-transition:enter-start="opacity-0"--}}
+{{--            x-transition:enter-end="opacity-100"--}}
+{{--            x-transition:leave="transition-opacity ease-linear duration-300"--}}
+{{--            x-transition:leave-start="opacity-100"--}}
+{{--            x-transition:leave-end="opacity-0"--}}
+{{--            class="fixed inset-0 bg-gray-600 bg-opacity-75"--}}
+{{--            aria-hidden="true"--}}
+{{--        ></div>--}}
+
+{{--        <div--}}
+{{--            x-show="show"--}}
+{{--            x-transition:enter="transition ease-in-out duration-300 transform"--}}
+{{--            x-transition:enter-start="-translate-x-full"--}}
+{{--            x-transition:enter-end="translate-x-0"--}}
+{{--            x-transition:leave="transition ease-in-out duration-300 transform"--}}
+{{--            x-transition:leave-start="translate-x-0"--}}
+{{--            x-transition:leave-end="-translate-x-full"--}}
+{{--            class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white"--}}
+{{--        >--}}
+{{--            <div--}}
+{{--                x-show="show"--}}
+{{--                x-transition:enter="ease-in-out duration-300"--}}
+{{--                x-transition:enter-start="opacity-0"--}}
+{{--                x-transition:enter-end="opacity-100"--}}
+{{--                x-transition:leave="ease-in-out duration-300"--}}
+{{--                x-transition:leave-start="opacity-100"--}}
+{{--                x-transition:leave-end="opacity-0"--}}
+{{--                class="absolute top-0 right-0 -mr-12 pt-2"--}}
+{{--            >--}}
+{{--                <button--}}
+{{--                    x-on:click="show = false"--}}
+{{--                    class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"--}}
+{{--                >--}}
+{{--                    <span class="sr-only">Close sidebar</span>--}}
+{{--                    <!-- Heroicon name: outline/x -->--}}
+{{--                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">--}}
+{{--                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />--}}
+{{--                    </svg>--}}
+{{--                </button>--}}
+{{--            </div>--}}
+
+{{--            <div class="flex-shrink-0 flex items-center px-4">--}}
+{{--                Bladebook--}}
+{{--            </div>--}}
+{{--            <div class="mt-5 flex-1 h-0 overflow-y-auto">--}}
+{{--                <nav class="px-2 space-y-1">--}}
+{{--                    @foreach($elements as $category => $categoryItems)--}}
+{{--                        <a href="{{ $categoryItems['route'] }}" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">--}}
+{{--                            {{ $category }}--}}
+{{--                        </a>--}}
+{{--                    @endforeach--}}
+{{--                </nav>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+{{--        <div class="flex-shrink-0 w-14" aria-hidden="true">--}}
+{{--            <!-- Dummy element to force sidebar to shrink to fit close icon -->--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
+<!-- Static sidebar for desktop -->
+{{--<div class="hidden lg:flex lg:flex-shrink-0 h-full">--}}
+{{--    <div class="flex flex-col w-64">--}}
+{{--        <div class="flex flex-col flex-grow border-r border-gray-200 pt-5 pb-4 bg-white dark:bg-slate-800 dark:text-slate-200 overflow-y-auto">--}}
+{{--            --}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 
