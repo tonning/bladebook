@@ -9,7 +9,7 @@ Route::get('/', [BooksController::class, 'index'])->name('bladebook');
 
 foreach (app(BladebookComponentsFinder::class)->getManifest() as $alias => $class) {
     foreach ($this->app['bladebook']->getBooks() as $book) {
-        Route::get(Str::slug($book['name']) . '/{category?}', [ComponentsController::class, 'index'])->name('category');
+        Route::get(Str::slug($book['name']) . '/{category?}', [ComponentsController::class, 'index']);
 
         if (Str::startsWith($class, $book['namespace'])) {
             $namespace = Str::of($book['namespace'])->replace('\\', '.')->lower()->finish('.');
