@@ -24,7 +24,7 @@
         "haydenpierce/class-finder": "^0.4.3",
         "illuminate/contracts": "^8.37 || ^9.0",
         "livewire/livewire": "^2.4",
-        "symfony/var-exporter": "^5.2"
+        "symfony/var-exporter": "^5.2 || ^6.2"
     },
     "require-dev": {
         "brianium/paratest": "^6.2",
